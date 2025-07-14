@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Autofill {
-    //指定数据库操作类型
+public @interface  Autofill {
+    //指定数据库操作类型 UPDATE INSERT
     OperationType value();
 
 }

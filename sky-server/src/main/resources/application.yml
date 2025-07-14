@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   profiles:
@@ -37,3 +37,8 @@ sky:
     admin-ttl: 720000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    access-key-id: ${sky.ccess-key-id}
+    access-key-secret: ${sky.access-key-secret}
+    bucket-name: ${sky.bucket-name}
