@@ -1,11 +1,14 @@
 package com.sky.service.impl;
 
+import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDIshMapper;
 import com.sky.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -25,6 +28,10 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     private DishFlavorMapper dishFlavorMapper;
+
+    @Autowired
+    private SetmealDIshMapper setmealDIshMapper;
+
     /**
      * 新增菜品对应口味
      *
@@ -40,11 +47,11 @@ public class DishServiceImpl implements DishService {
         dishMapper.insert(dish);
 
         //获取insert语句生成的主键值
-        Long dishId=dish.getId();
+        Long dishId = dish.getId();
 
 
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        if (flavors !=null && flavors.size()>0){
+        if (flavors != null && flavors.size() > 0) {
 
             flavors.forEach(dishFlavor -> {
                 dishFlavor.setDishId(dishId);
@@ -58,25 +65,42 @@ public class DishServiceImpl implements DishService {
 
 
     /**
-     *
      * 批量删除菜品功能
+     *
      * @param ids
      */
     public void deleteBatch(List<Long> ids) {
         //判断当前菜品是否能够被删除--是否存在起售中的菜品
         for (Long id : ids) {
 
-            Dish dish=dishMapper.getById(id);
-            if (dish.getStatus() == StatusConstant.ENABLE){
+            Dish dish = dishMapper.getById(id);
+            if (dish.getStatus() == StatusConstant.ENABLE) {
+                //当年菜品处于起售中，不能删除
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
 
 
             }
         }
         //判断当前菜品是否能够被删除--是否被套餐关联了？？
+        List<Long> setmealIds = setmealDIshMapper.getSetmealIdsByDishIds(ids);
+        if (setmealIds !=null && setmealIds.size()>0){
+
+            //当前菜品被套餐关联了，不能删除
+            throw  new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
 
         //删除菜品表的菜品数据
 
-        //删除菜品关联的口味数据
+        for (Long id : ids) {
+
+
+            dishMapper.deleteById(id);
+            //删除菜品关联的口味数据
+            dishFlavorMapper.deleteByDishId(id);
+        }
+
+
+
 
 
     }

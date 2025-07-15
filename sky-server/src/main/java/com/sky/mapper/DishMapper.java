@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.sky.annotation.Autofill;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,12 @@ public interface DishMapper {
      */
     @Select("select * from dish where id = #{id}")
     Dish getById(Long id);
+
+
+    /**
+     * 删除菜品功能
+     * @param id
+     */
+    @Delete("delete from dish where id =#{id}")
+    void deleteById(Long id);
 }
