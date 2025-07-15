@@ -8,10 +8,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 菜品管理
@@ -25,17 +24,35 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+
     /**
      * 新增菜品
+     *
      * @param dishDTO
      * @return
      */
     @PostMapping
     @ApiOperation("新增菜品")
     public Result save(@RequestBody DishDTO dishDTO) {
-        log.info("新增菜品: {}",dishDTO);
+        log.info("新增菜品: {}", dishDTO);
         return Result.success();
 
     }
 
+    /**
+     * 菜品的批量删除
+     *
+     * @param ids
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("菜品的批量删除")
+    public Result delete(@RequestParam List<Long> ids) {
+
+        log.info("菜品批量删除: {}",ids);
+
+        dishService.deleteBatch(ids);
+        return Result.success();
+
+    }
 }

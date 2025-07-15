@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
@@ -52,6 +53,30 @@ public class DishServiceImpl implements DishService {
 
             dishFlavorMapper.insertBatch(flavors);
         }
+
+    }
+
+
+    /**
+     *
+     * 批量删除菜品功能
+     * @param ids
+     */
+    public void deleteBatch(List<Long> ids) {
+        //判断当前菜品是否能够被删除--是否存在起售中的菜品
+        for (Long id : ids) {
+
+            Dish dish=dishMapper.getById(id);
+            if (dish.getStatus() == StatusConstant.ENABLE){
+
+
+            }
+        }
+        //判断当前菜品是否能够被删除--是否被套餐关联了？？
+
+        //删除菜品表的菜品数据
+
+        //删除菜品关联的口味数据
 
 
     }

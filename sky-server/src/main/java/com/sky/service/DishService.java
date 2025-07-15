@@ -2,6 +2,8 @@ package com.sky.service;
 
 import com.sky.dto.DishDTO;
 
+import java.util.List;
+
 public interface DishService {
 
 
@@ -14,4 +16,10 @@ public interface DishService {
      */
     public void saveWithFlavor(DishDTO dishDTO);
 
+    /**
+     *
+     * 批量删除菜品功能
+     * @param ids
+     */
+    void deleteBatch(List<Long> ids);
 }
