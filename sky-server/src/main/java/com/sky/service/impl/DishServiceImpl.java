@@ -88,37 +88,40 @@ public class DishServiceImpl implements DishService {
         }
         //判断当前菜品是否能够被删除--是否被套餐关联了？？
         List<Long> setmealIds = setmealDIshMapper.getSetmealIdsByDishIds(ids);
-        if (setmealIds !=null && setmealIds.size()>0){
+        if (setmealIds != null && setmealIds.size() > 0) {
 
             //当前菜品被套餐关联了，不能删除
-            throw  new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
         }
 
         //删除菜品表的菜品数据
 
-        for (Long id : ids) {
+//        for (Long id : ids) {
+//
+//
+//            dishMapper.deleteById(id);
+//            //删除菜品关联的口味数据
+//            dishFlavorMapper.deleteByDishId(id);
+//        }
 
 
-            dishMapper.deleteById(id);
-            //删除菜品关联的口味数据
-            dishFlavorMapper.deleteByDishId(id);
-        }
-
-
-
+        //根据菜品id集合批量删除菜品数据
+        dishMapper.deleteByIds(ids);
+        //根据菜品id集合批量删除关联的口味数据
+        dishFlavorMapper.deleteByDishIds(ids);
 
 
     }
 
     /**
-     *
      * 菜品分页查询
+     *
      * @param dishPageQueryDTO
      * @return
      */
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
-        PageHelper.startPage(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
-        Page<DishVO> page=dishMapper.pageQuery(dishPageQueryDTO);
-        return new PageResult(page.getTotal(),page.getResult());
+        PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
+        Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
+        return new PageResult(page.getTotal(), page.getResult());
     }
 }
