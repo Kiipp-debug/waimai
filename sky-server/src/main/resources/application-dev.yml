@@ -11,3 +11,7 @@ sky:
     access-key-id: LTAI5tDuFKGQ9mG97X5UcH2n
     access-key-secret: 8jvSSO0zdG3v5xs5BMp2dHVCNjK1t8
     bucket-name: sky-waimaitest
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
