@@ -115,7 +115,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return list;
 
     }
-    //如果不存在，需要插入一条购物车数据
+
+
+    /**
+     * 清空购物车
+     */
+
+    public void cleanShoppingCart() {
+
+
+        Long userId = BaseContext.getCurrentId();
+        shoppingCartMapper.deleteByUserId(userId);
+
+
+
+    }
+
+
+
+
 
 
 }
