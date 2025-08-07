@@ -190,5 +190,11 @@ public class OrderServiceImpl implements OrderService {
         webSocketServer.sendToAllClient(json);
     }
 
+    /**
+     *
+     * 客户催单
+     */
+    public void reminder() {
 
+    }
 }
